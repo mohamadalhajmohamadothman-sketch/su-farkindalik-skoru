@@ -10,6 +10,7 @@
             --secondary-blue: #3498db;
             --accent-green: #27ae60;
             --warning-red: #c0392b;
+            --notice-orange: #e67e22;
             --light-bg: #f4f7f6;
             --white: #ffffff;
             --text-dark: #333;
@@ -40,8 +41,7 @@
             letter-spacing: 2px;
             text-transform: uppercase;
             position: absolute;
-            top: 15px;
-            left: 25px;
+            top: 15px; left: 25px;
             color: var(--accent-green);
         }
 
@@ -52,13 +52,6 @@
             padding: 2.5rem;
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-        }
-
-        .intro {
-            border-bottom: 2px solid var(--light-bg);
-            margin-bottom: 2.5rem;
-            padding-bottom: 1.5rem;
-            text-align: center;
         }
 
         .question-card {
@@ -75,30 +68,20 @@
             color: var(--primary-blue);
         }
 
-        .options-container {
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-        }
-
         .option {
             padding: 0.9rem;
             border: 1px solid var(--border-color);
             border-radius: 6px;
             cursor: pointer;
-            transition: all 0.2s;
             display: flex;
             align-items: center;
+            margin-bottom: 8px;
+            transition: 0.2s;
         }
 
-        .option:hover {
-            background-color: #f0f7fd;
-        }
+        .option:hover { background-color: #f0f7fd; }
 
-        .option input {
-            margin-right: 15px;
-            transform: scale(1.2);
-        }
+        .option input { margin-right: 15px; transform: scale(1.2); }
 
         .feedback {
             margin-top: 1.5rem;
@@ -108,13 +91,9 @@
             font-size: 1rem;
             display: none;
             color: #2c3e50;
-            animation: fadeIn 0.4s;
         }
 
-        .btn-container {
-            text-align: center;
-            margin: 3rem 0;
-        }
+        .btn-container { text-align: center; margin: 3rem 0; }
 
         button {
             background-color: var(--accent-green);
@@ -125,12 +104,6 @@
             font-weight: bold;
             border-radius: 50px;
             cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        button:hover {
-            transform: translateY(-2px);
-            background-color: #219150;
         }
 
         #result-area {
@@ -142,11 +115,16 @@
             border: 2px solid transparent;
         }
 
-        .score-display {
-            font-size: 3.5rem;
-            font-weight: 900;
-            color: var(--primary-blue);
-            margin: 1rem 0;
+        .score-display { font-size: 3.5rem; font-weight: 900; margin: 1rem 0; }
+
+        .check-notice {
+            color: var(--notice-orange);
+            font-weight: bold;
+            margin-top: 20px;
+            font-size: 1.1rem;
+            border: 1px dashed var(--notice-orange);
+            padding: 10px;
+            display: inline-block;
         }
 
         .disclaimer-box {
@@ -156,20 +134,7 @@
             border: 2px solid var(--warning-red);
             font-size: 0.9rem;
             color: var(--warning-red);
-            text-align: justify;
             border-radius: 8px;
-        }
-
-        .check-notice {
-            color: #e67e22;
-            font-weight: bold;
-            margin-top: 15px;
-            font-size: 1.1rem;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -181,13 +146,8 @@
     </header>
 
     <div class="container">
-        <section class="intro">
-            <p>Bu ölçek, içme suyu kalitesi ve bilinçli tüketim alışkanlıklarınızı analiz etmek amacıyla hazırlanmıştır. Lütfen her soruyu dikkatle yanıtlayınız.</p>
-        </section>
-
         <form id="quiz-form">
             <div id="questions-wrapper"></div>
-
             <div class="btn-container">
                 <button type="button" onclick="calculateScore()">Skoru Hesapla ve Analizi Gör</button>
             </div>
@@ -198,94 +158,61 @@
             <div class="score-display" id="final-score"></div>
             <p id="score-category" style="font-weight: bold; font-size: 1.4rem;"></p>
             <p id="score-description" style="font-size: 1.1rem;"></p>
-            <p class="check-notice">Lütfen düşük puan aldığınız soruların altındaki bilgilendirme metinlerini kontrol edin!</p>
+            <div class="check-notice">Lütfen düşük puan aldığınız soruların altındaki bilgilendirme metinlerini kontrol edin!</div>
         </div>
 
         <div class="disclaimer-box">
             <strong>ETİK VE HUKUKİ UYARI:</strong><br>
-            Bu uygulama HydroEthos grubu tarafından yalnızca akademik farkındalık amacıyla hazırlanmıştır. Tıbbi bir teşhis niteliği taşımaz. Sağlığınızla ilgili kesin kararlar için uzman bir sağlık profesyoneline başvurunuz.
+            Bu uygulama HydroEthos grubu tarafından yalnızca akademik farkındalık amacıyla hazırlanmıştır. Tıbbi bir teşhis niteliği taşımaz.
         </div>
     </div>
 
     <script>
         const quizData = [
-            {
-                q: "1. Şişelenmiş su alırken mineral değerlerini (Kalsiyum, Magnezyum vb.) ne sıklıkla incelersiniz?",
-                options: [
-                    { text: "Her zaman", score: 2, feedback: "Düzenli mineral takibi, vücudun biyokimyasal dengesi için bilinçli bir davranıştır." },
-                    { text: "Bazen", score: 1, feedback: "Kısmi farkındalık; ancak minerallerin sağlığa etkisini daha sık takip etmeniz önerilir." },
-                    { text: "Hiçbir zaman", score: 0, feedback: "Etiket okuma alışkanlığının olmaması, suyun besin değerini göz ardı ettiğinizi gösterir." }
-                ]
-            },
-            {
-                q: "2. İçtiğiniz suyun pH değerinin (İdeal Aralık 7.0 - 8.0) farkında mısınız?",
-                options: [
-                    { text: "Evet, her zaman kontrol ederim", score: 2, feedback: "pH dengesi hücre sağlığı için kritiktir. 7.0-8.0 arası nötr/hafif alkali değerler vücut dengesi için idealdir." },
-                    { text: "Sadece ismini duydum", score: 1, feedback: "Bilgi: pH, suyun asitlik veya alkalilik derecesini gösterir. İdeal içme suyu pH'ı 7.0 ile 8.0 aralığında olmalıdır." },
-                    { text: "Hayır, önemsemiyorum", score: 0, feedback: "Önemli: pH değeri suyun kalitesini belirler. Alkali sular metabolik asidozu dengelemeye yardımcı olabilir." }
-                ]
-            },
-            {
-                q: "3. Günlük su tüketim miktarınızı litre bazında takip ediyor musunuz?",
-                options: [
-                    { text: "Evet, düzenli takip ederim", score: 2, feedback: "Vücudun hidrasyon dengesini korumak için miktar takibi hayati önem taşır." },
-                    { text: "Sadece susadığımda içerim", score: 1, feedback: "Susama hissi hafif dehidrasyon belirtisidir; takip etmek daha sağlıklıdır." },
-                    { text: "Takip etmiyorum", score: 0, feedback: "Yetersiz su tüketimi odaklanma sorunlarına ve metabolik yavaşlamaya neden olabilir." }
-                ]
-            },
-            {
-                q: "4. Musluk suyunuzun kalitesine dair kurum raporlarını (İSKİ vb.) inceler misiniz?",
-                options: [
-                    { text: "Evet, raporlara bakarım", score: 2, feedback: "Bilimsel veri takibi, çevre ve halk sağlığı bilincinizin yüksek olduğunu gösterir." },
-                    { text: "Sadece duyumlara güvenirim", score: 1, feedback: "Kulaktan dolma bilgiler yerine resmi laboratuvar analizlerini baz almalısınız." },
-                    { text: "Hayır, incelemem", score: 0, feedback: "Veriye dayalı olmayan bir güven, sudaki görünmez riskleri (ağır metal vb.) gözden kaçırmanıza neden olabilir." }
-                ]
-            },
-            {
-                q: "5. Plastik atıkları azaltmak için su tüketiminde matara kullanıyor musunuz?",
-                options: [
-                    { text: "Her zaman", score: 2, feedback: "Ekolojik farkındalığınız ve sürdürülebilirlik bilinciniz takdire şayandır." },
-                    { text: "Bazen", score: 1, feedback: "Plastik şişe kullanımı hem çevreye zarar verir hem de mikroplastik maruziyetini artırır." },
-                    { text: "Hayır", score: 0, feedback: "Sürekli plastik şişe kullanımı ciddi bir mikroplastik kaynağı ve çevre kirliliği sebebidir." }
-                ]
-            },
-            {
-                q: "6. Su içeriği analizlerinin eğitim müfredatında yer almasını destekliyor musunuz?",
-                options: [
-                    { text: "Kesinlikle katılıyorum", score: 2, feedback: "Su okuryazarlığı toplumsal sağlık için temel bir eğitim ihtiyacıdır." },
-                    { text: "Belki", score: 1, feedback: "Toplumsal farkındalık için bu bilgilerin yaygınlaşması kritiktir." },
-                    { text: "Hayır", score: 0, feedback: "Bilgi eksikliği, yanlış su tüketim alışkanlıklarının devam etmesine neden olur." }
-                ]
-            },
-            {
-                q: "7. TDS (Toplam Çözünmüş Katı Madde) değerinin suyun mineral yoğunluğunu ifade ettiğini biliyor muydunuz?",
-                options: [
-                    { text: "Evet, biliyorum", score: 2, feedback: "TDS, içme suyundaki toplam mineralizasyon demektir. Dengeli mineralli su (150-350 mg/L) ideal kabul edilir." },
-                    { text: "Hayır, bilgim yok", score: 0, feedback: "TDS Bilgi: Sudaki çözünmüş mineralleri ölçer. 150-350 mg/L aralığı 'dengeli mineralli' su olarak tanımlanır ve tercih edilmelidir." }
-                ]
-            },
-            {
-                q: "8. Suyun sadece berrak görünmesi sizin için yeterli mi?",
-                options: [
-                    { text: "Hayır, analiz şart", score: 2, feedback: "Pek çok tehlikeli madde (bakteri, ağır metal) renksiz ve kokusuzdur." },
-                    { text: "Evet, berraksa içerim", score: 0, feedback: "Hata: Berraklık sadece fiziksel bir veridir; kimyasal ve mikrobiyolojik güvenlik analizle anlaşılır." }
-                ]
-            },
-            {
-                q: "9. Su satın alırken etikete bakar mısınız?",
-                options: [
-                    { text: "Her zaman", score: 3, feedback: "Bilinçli tüketici davranışı. İçerik, kaynak ve son kullanma tarihini kontrol etmek sağlığınızı korur." },
-                    { text: "Bazen", score: 2, feedback: "Kısmi farkındalık. Suyun kaynağını ve içeriğini her alışverişte kontrol etmeye çalışın." },
-                    { text: "Hayır", score: 1, feedback: "Bilgiye dayalı karar yok. Etiket okumadan su almak, içeriği bilinmeyen bir maddeyi vücuda almak demektir." }
-                ]
-            },
-            {
-                q: "10. Suyun tadı sizin için sağlık değerlerinden daha mı önemlidir?",
-                options: [
-                    { text: "Hayır, sağlık önce gelir", score: 1, feedback: "Doğru yaklaşım. Tadı güzel olan her su, mikrobiyolojik veya mineral açısından zengin olmayabilir." },
-                    { text: "Evet, tadı kötüyse içmem", score: 0, feedback: "Unutmayın: Saf suyun tadı nötrdür. Tat bazen yapay mineraller veya klorla değişmiş olabilir." }
-                ]
-            }
+            { q: "1. Şişelenmiş su mineral değerlerini ne sıklıkla incelersiniz?", options: [
+                { text: "Her zaman", score: 2, feedback: "Bilinçli bir davranış." },
+                { text: "Bazen", score: 1, feedback: "Kısmi farkındalık." },
+                { text: "Hiçbir zaman", score: 0, feedback: "Etiket okuma alışkanlığı geliştirilmelidir." }
+            ]},
+            { q: "2. İçtiğiniz suyun pH değerinin (İdeal Aralık 7.0 - 8.0) farkında mısınız?", options: [
+                { text: "Evet, her zaman", score: 2, feedback: "7.0-8.0 aralığı vücut dengesi için idealdir." },
+                { text: "Sadece ismini duydum", score: 1, feedback: "Bilgi: pH, suyun asitlik derecesidir. İdeal aralık 7.0 - 8.0'dır." },
+                { text: "Hayır", score: 0, feedback: "Önemli: pH değeri suyun kalitesini belirler." }
+            ]},
+            { q: "3. Günlük su tüketim miktarınızı takip ediyor musunuz?", options: [
+                { text: "Evet", score: 2, feedback: "Hidrasyon takibi hayati önem taşır." },
+                { text: "Sadece susadığımda", score: 1, feedback: "Susama dehidrasyon belirtisidir." },
+                { text: "Hayır", score: 0, feedback: "Takip etmek metabolizmayı düzenler." }
+            ]},
+            { q: "4. Kurum raporlarını (İSKİ vb.) inceler misiniz?", options: [
+                { text: "Evet", score: 2, feedback: "Bilimsel veri takibi güvenli tüketim sağlar." },
+                { text: "Hayır", score: 0, feedback: "Veriye dayalı güven esastır." }
+            ]},
+            { q: "5. Plastik atıkları azaltmak için matara kullanıyor musunuz?", options: [
+                { text: "Evet", score: 2, feedback: "Ekolojik farkındalık yüksektir." },
+                { text: "Hayır", score: 0, feedback: "Plastik kullanımı mikroplastik maruziyetini artırır." }
+            ]},
+            { q: "6. Su analizlerinin eğitimde yer almasını destekliyor musunuz?", options: [
+                { text: "Evet", score: 2, feedback: "Su okuryazarlığı toplumsal sağlık için gereklidir." },
+                { text: "Hayır", score: 0, feedback: "Eğitim farkındalığın temelidir." }
+            ]},
+            { q: "7. TDS değerinin mineral yoğunluğunu ifade ettiğini biliyor muydunuz?", options: [
+                { text: "Evet", score: 2, feedback: "TDS, toplam mineralizasyon demektir. Dengeli su 150-350 mg/L olmalıdır." },
+                { text: "Hayır", score: 0, feedback: "TDS Bilgi: Toplam mineralizasyon demektir. Dengeli su 150-350 mg/L aralığındadır." }
+            ]},
+            { q: "8. Suyun berrak görünmesi yeterli mi?", options: [
+                { text: "Hayır", score: 2, feedback: "Analiz şarttır; bakteri ve ağır metaller görünmez." },
+                { text: "Evet", score: 0, feedback: "Hata: Berraklık mikrobiyolojik güvenliği kanıtlamaz." }
+            ]},
+            { q: "9. Su satın alırken etikete bakar mısınız?", options: [
+                { text: "Her zaman", score: 3, feedback: "Bilinçli tüketici davranışı." },
+                { text: "Bazen", score: 2, feedback: "Kısmi farkındalık." },
+                { text: "Hayır", score: 1, feedback: "Bilgiye dayalı karar yok." }
+            ]},
+            { q: "10. Tadı sağlık değerlerinden önemli mi?", options: [
+                { text: "Hayır", score: 1, feedback: "Doğru yaklaşım; sağlık önceliktir." },
+                { text: "Evet", score: 0, feedback: "Tat yanıltıcı olabilir; analiz esastır." }
+            ]}
         ];
 
         function initQuiz() {
@@ -293,81 +220,33 @@
             quizData.forEach((item, i) => {
                 const card = document.createElement('div');
                 card.className = 'question-card';
-                card.innerHTML = `
-                    <div class="question-text">${item.q}</div>
-                    <div class="options-container">
-                        ${item.options.map((opt, oi) => `
-                            <label class="option">
-                                <input type="radio" name="q${i}" value="${opt.score}" data-feedback="${opt.feedback}">
-                                ${opt.text}
-                            </label>
-                        `).join('')}
-                    </div>
-                    <div class="feedback" id="feedback-${i}"></div>
-                `;
+                card.innerHTML = `<div class="question-text">${item.q}</div><div class="options-container">
+                    ${item.options.map((opt, oi) => `<label class="option"><input type="radio" name="q${i}" value="${opt.score}" data-feedback="${opt.feedback}">${opt.text}</label>`).join('')}
+                </div><div class="feedback" id="feedback-${i}"></div>`;
                 wrapper.appendChild(card);
             });
         }
 
         function calculateScore() {
-            let total = 0;
-            let totalPossible = 20; 
-            let answered = 0;
-
+            let total = 0, answered = 0;
             quizData.forEach((_, i) => {
                 const selected = document.querySelector(`input[name="q${i}"]:checked`);
-                const feedbackDiv = document.getElementById(`feedback-${i}`);
-                
                 if (selected) {
                     const score = parseInt(selected.value);
-                    const feedbackText = selected.getAttribute('data-feedback');
-                    total += score;
-                    answered++;
-
-                    feedbackDiv.style.display = 'block';
-                    feedbackDiv.innerHTML = `<strong>Puan: ${score}</strong><br><em>Analiz:</em> ${feedbackText}`;
+                    total += score; answered++;
+                    const fb = document.getElementById(`feedback-${i}`);
+                    fb.style.display = 'block';
+                    fb.innerHTML = `<strong>Puan: ${score}</strong><br>${selected.getAttribute('data-feedback')}`;
                 }
             });
-
-            if (answered < quizData.length) {
-                alert("Lütfen değerlendirmeyi tamamlamak için tüm soruları yanıtlayınız.");
-                return;
-            }
-
-            const resultArea = document.getElementById('result-area');
-            const scoreDisplay = document.getElementById('final-score');
-            const category = document.getElementById('score-category');
-            const desc = document.getElementById('score-description');
-
-            resultArea.style.display = 'block';
-            scoreDisplay.innerHTML = `${total} / ${totalPossible}`;
-
-            if (total <= 8) {
-                category.innerText = "Düşük Farkındalık Düzeyi";
-                category.style.color = "#c0392b";
-                desc.innerText = "Su tüketimi ve kalitesi konusundaki bilinciniz geliştirilmelidir. Etiket okuma ve su içeriği araştırmalarına daha fazla vakit ayırmalısınız.";
-                resultArea.style.borderColor = "#c0392b";
-                resultArea.style.backgroundColor = "#fff5f5";
-            } else if (total <= 15) {
-                category.innerText = "Orta Farkındalık Düzeyi";
-                category.style.color = "#f39c12";
-                desc.innerText = "Bilinçli bir kullanıcısınız ancak TDS ve pH gibi teknik detaylarda farkındalığınızı artırabilirsiniz.";
-                resultArea.style.borderColor = "#f39c12";
-                resultArea.style.backgroundColor = "#fffcf5";
-            } else {
-                category.innerText = "Yüksek Farkındalık Düzeyi";
-                category.style.color = "#27ae60";
-                desc.innerText = "Tebrikler! Su okuryazarlığı ve sağlık bilinciniz mükemmel seviyede.";
-                resultArea.style.borderColor = "#27ae60";
-                resultArea.style.backgroundColor = "#f5fff8";
-            }
-
-            resultArea.scrollIntoView({ behavior: 'smooth' });
+            if (answered < 10) return alert("Lütfen tüm soruları yanıtlayın.");
+            document.getElementById('result-area').style.display = 'block';
+            document.getElementById('final-score').innerText = total + " / 20";
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         }
-
         window.onload = initQuiz;
     </script>
 </body>
 </html>
-                                                
-                
+            
+                            
