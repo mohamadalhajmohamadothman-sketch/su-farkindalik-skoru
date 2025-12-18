@@ -52,6 +52,7 @@
             padding: 2.5rem;
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            position: relative;
         }
 
         .intro {
@@ -158,6 +159,7 @@
             color: var(--warning-red);
             text-align: justify;
             border-radius: 8px;
+            font-weight: 500;
         }
 
         .check-notice {
@@ -165,6 +167,14 @@
             font-weight: bold;
             margin-top: 15px;
             font-size: 1.1rem;
+        }
+
+        .footer-signature {
+            text-align: right;
+            margin-top: 2rem;
+            font-family: 'Brush Script MT', cursive;
+            font-size: 0.95rem;
+            color: #333;
         }
 
         @keyframes fadeIn {
@@ -203,7 +213,11 @@
 
         <div class="disclaimer-box">
             <strong>ETİK VE HUKUKİ UYARI:</strong><br>
-            Bu uygulama HydroEthos grubu tarafından yalnızca akademik farkındalık amacıyla hazırlanmıştır. Tıbbi bir teşhis niteliği taşımaz. Sağlığınızla ilgili kesin kararlar için uzman bir sağlık profesyoneline başvurunuz.
+            Bu uygulama HydroEthos grubu tarafından yalnızca akademik farkındalık ve bilgilendirme amacıyla hazırlanmıştır. Test sonucunda elde edilen veriler tıbbi bir teşhis veya profesyonel sağlık tavsiyesi niteliği taşımaz. İdeal su tüketim miktarı; vücut kütlesi (kilo), yaş, metabolizma hızı, iklim şartları ve fiziksel aktivite düzeyi gibi farklı özellikler işin içine girdiği için kişisel farklılıklar gösterir. Sağlığınızla ilgili kesin kararlar için uzman bir sağlık profesyoneline başvurunuz. Tüm hakları saklıdır.
+        </div>
+
+        <div class="footer-signature">
+            Mohamad Ali Alhaj Mohamad Othman Tarafından hazırlanmıştır
         </div>
     </div>
 
@@ -258,10 +272,10 @@
                 ]
             },
             {
-                q: "7. TDS (Toplam Çözünmüş Katı Madde) değerinin suyun mineral yoğunluğunu ifade ettiğini biliyor muydunuz?",
+                q: "7. TDS değerinin suyun mineral yoğunluğunu ifade ettiğini biliyor muydunuz?",
                 options: [
-                    { text: "Evet, biliyorum", score: 2, feedback: "TDS, içme suyundaki toplam mineralizasyon demektir. Dengeli mineralli su (150-350 mg/L) ideal kabul edilir." },
-                    { text: "Hayır, bilgim yok", score: 0, feedback: "TDS Bilgi: Sudaki çözünmüş mineralleri ölçer. 150-350 mg/L aralığı 'dengeli mineralli' su olarak tanımlanır ve tercih edilmelidir." }
+                    { text: "Evet, biliyorum", score: 2, feedback: "TDS, içme suyunda Toplam Mineralizasyon demektir. Dengeli mineralli su (150-350 mg/L) ideal kabul edilir." },
+                    { text: "Hayır, bilgim yok", score: 0, feedback: "TDS Bilgi: İçme suyunda Toplam Mineralizasyon demektir ve sudaki çözünmüş mineralleri ölçer. 150-350 mg/L aralığı 'dengeli mineralli' su olarak tanımlanır." }
                 ]
             },
             {
@@ -276,7 +290,7 @@
                 options: [
                     { text: "Her zaman", score: 3, feedback: "Bilinçli tüketici davranışı. İçerik, kaynak ve son kullanma tarihini kontrol etmek sağlığınızı korur." },
                     { text: "Bazen", score: 2, feedback: "Kısmi farkındalık. Suyun kaynağını ve içeriğini her alışverişte kontrol etmeye çalışın." },
-                    { text: "Hayır", score: 1, feedback: "Bilgiye dayalı karar yok. Etiket okumadan su almak, içeriği bilinmeyen bir maddeyi vücuda almak demektir." }
+                    { text: "Hayır", score: 1, feedback: "Bilgieye dayalı karar yok. Etiket okumadan su almak, içeriği bilinmeyen bir maddeyi vücuda almak demektir." }
                 ]
             },
             {
@@ -345,19 +359,19 @@
             if (total <= 8) {
                 category.innerText = "Düşük Farkındalık Düzeyi";
                 category.style.color = "#c0392b";
-                desc.innerText = "Su tüketimi ve kalitesi konusundaki bilinciniz geliştirilmelidir. Etiket okuma ve su içeriği araştırmalarına daha fazla vakit ayırmalısınız.";
+                desc.innerText = "Su tüketimi ve kalitesi konusundaki bilinciniz geliştirilmelidir.";
                 resultArea.style.borderColor = "#c0392b";
                 resultArea.style.backgroundColor = "#fff5f5";
             } else if (total <= 15) {
                 category.innerText = "Orta Farkındalık Düzeyi";
                 category.style.color = "#f39c12";
-                desc.innerText = "Bilinçli bir kullanıcısınız ancak TDS ve pH gibi teknik detaylarda farkındalığınızı artırabilirsiniz.";
+                desc.innerText = "Bilinçli bir kullanıcısınız ancak teknik detaylarda gelişebilirsiniz.";
                 resultArea.style.borderColor = "#f39c12";
                 resultArea.style.backgroundColor = "#fffcf5";
             } else {
                 category.innerText = "Yüksek Farkındalık Düzeyi";
                 category.style.color = "#27ae60";
-                desc.innerText = "Tebrikler! Su okuryazarlığı ve sağlık bilinciniz mükemmel seviyede.";
+                desc.innerText = "Tebrikler! Su okuryazarlığınız mükemmel seviyede.";
                 resultArea.style.borderColor = "#27ae60";
                 resultArea.style.backgroundColor = "#f5fff8";
             }
@@ -369,4 +383,4 @@
     </script>
 </body>
 </html>
-                        
+                                                
